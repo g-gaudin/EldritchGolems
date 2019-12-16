@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GTG",
+    "TET",
+    "GTG"
+  ],
+  "key": {
+    "E": {
+      "item": "minecraft:ender_eye"
+    },
+    "T": {
+      "item": "minecraft:diamond"
+    },
+    "G": {
+      "item": "minecraft:clay_ball"
+    }
+  },
+  "result": {
+    "item": "eldritchgolems:golemhead"
+  }
+}

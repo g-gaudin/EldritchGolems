@@ -1,0 +1,8 @@
+{
+    "parent": "block/cube_bottom_top",
+    "textures": {
+        "bottom": "eldritchgolems:block/golemhead",
+        "top": "eldritchgolems:block/golemheadtop",
+        "side": "eldritchgolems:block/golemheadside"
+    }
+}
