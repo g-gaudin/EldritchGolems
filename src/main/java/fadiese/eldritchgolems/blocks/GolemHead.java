@@ -38,9 +38,9 @@ public class GolemHead extends Block {
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer,
                                 ItemStack stack) {
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-        trySpawnGolem(worldIn, pos);
+        trySpawnGolem(worldIn, pos,placer);
     }
-    private void trySpawnGolem(World world, BlockPos pos) {
+    private void trySpawnGolem(World world, BlockPos pos,@Nullable LivingEntity placer) {
         BlockPattern.PatternHelper blockpattern$patternhelper = this.getGolemPattern().match(world, pos);
         if (blockpattern$patternhelper != null) {
             for (int j = 0; j < this.getGolemPattern().getPalmLength(); ++j) {

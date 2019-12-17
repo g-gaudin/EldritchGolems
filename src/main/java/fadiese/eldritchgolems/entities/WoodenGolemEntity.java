@@ -28,9 +28,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class WoodenGolemEntity extends GolemEntity {
 
-    protected static final DataParameter<Byte> PLAYER_CREATED = EntityDataManager.createKey(IronGolemEntity.class, DataSerializers.BYTE);
+    protected static final DataParameter<Byte> PLAYER_CREATED = EntityDataManager.createKey(WoodenGolemEntity.class, DataSerializers.BYTE);
     private int attackTimer;
-    private int holdRoseTick;
 
     public WoodenGolemEntity(EntityType<? extends WoodenGolemEntity> type, World worldIn) {
         super(type, worldIn);
@@ -84,10 +83,6 @@ public class WoodenGolemEntity extends GolemEntity {
         super.livingTick();
         if (this.attackTimer > 0) {
             --this.attackTimer;
-        }
-
-        if (this.holdRoseTick > 0) {
-            --this.holdRoseTick;
         }
 
         if (func_213296_b(this.getMotion()) > (double)2.5000003E-7F && this.rand.nextInt(5) == 0) {
@@ -144,10 +139,6 @@ public class WoodenGolemEntity extends GolemEntity {
         if (id == 4) {
             this.attackTimer = 10;
             this.playSound(SoundEvents.ENTITY_IRON_GOLEM_ATTACK, 1.0F, 1.0F);
-        } else if (id == 11) {
-            this.holdRoseTick = 400;
-        } else if (id == 34) {
-            this.holdRoseTick = 0;
         } else {
             super.handleStatusUpdate(id);
         }
@@ -157,17 +148,6 @@ public class WoodenGolemEntity extends GolemEntity {
     @OnlyIn(Dist.CLIENT)
     public int getAttackTimer() {
         return this.attackTimer;
-    }
-
-    public void setHoldingRose(boolean holdingRose) {
-        if (holdingRose) {
-            this.holdRoseTick = 400;
-            this.world.setEntityState(this, (byte)11);
-        } else {
-            this.holdRoseTick = 0;
-            this.world.setEntityState(this, (byte)34);
-        }
-
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
@@ -180,11 +160,6 @@ public class WoodenGolemEntity extends GolemEntity {
 
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
         this.playSound(SoundEvents.ENTITY_IRON_GOLEM_STEP, 1.0F, 1.0F);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public int getHoldRoseTick() {
-        return this.holdRoseTick;
     }
 
     public boolean isPlayerCreated() {

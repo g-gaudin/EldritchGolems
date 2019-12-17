@@ -12,7 +12,7 @@ public class WoodenGolemModel<T extends WoodenGolemEntity> extends EntityModel<T
 
     private RendererModel main;
     private RendererModel head;
-    private RendererModel branche;
+    private RendererModel twig;
     private RendererModel body;
     private RendererModel right_arm;
     private RendererModel left_arm;
@@ -42,13 +42,13 @@ public class WoodenGolemModel<T extends WoodenGolemEntity> extends EntityModel<T
         head.cubeList.add(new ModelBox(head, 0, 0, -2.0F, -12.0625F, -7.8542F, 4, 8, 1, 0.0F, false));
         head.cubeList.add(new ModelBox(head, 80, 45, -3.0F, -2.0625F, -2.8542F, 6, 2, 6, 0.0F, false));
 
-        branche = new RendererModel(this);
-        branche.setRotationPoint(63.3333F, -60.85F, 1.8333F);
-        setRotationAngle(branche, 0.0F, 0.0F, 0.7854F);
-        head.addChild(branche);
-        branche.cubeList.add(new ModelBox(branche, 0, 24, -9.25F, 71.7875F, -6.6875F, 1, 4, 1, 0.0F, false));
-        branche.cubeList.add(new ModelBox(branche, 4, 9, -12.25F, 70.7875F, -5.6875F, 3, 1, 0, 0.0F, false));
-        branche.cubeList.add(new ModelBox(branche, 0, 9, -8.25F, 68.7875F, -5.6875F, 2, 3, 0, 0.0F, false));
+        twig = new RendererModel(this);
+        twig.setRotationPoint(63.3333F, -60.85F, 1.8333F);
+        setRotationAngle(twig, 0.0F, 0.0F, 0.7854F);
+        head.addChild(twig);
+        twig.cubeList.add(new ModelBox(twig, 0, 24, -9.25F, 71.7875F, -6.6875F, 1, 4, 1, 0.0F, false));
+        twig.cubeList.add(new ModelBox(twig, 4, 9, -12.25F, 70.7875F, -5.6875F, 3, 1, 0, 0.0F, false));
+        twig.cubeList.add(new ModelBox(twig, 0, 9, -8.25F, 68.7875F, -5.6875F, 2, 3, 0, 0.0F, false));
 
         body = new RendererModel(this);
         body.setRotationPoint(0.0F, 79.2875F, 0.9792F);
@@ -89,13 +89,36 @@ public class WoodenGolemModel<T extends WoodenGolemEntity> extends EntityModel<T
     }
 
     @Override
-    public void render(T entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        main.render(f5);
+    public void render(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        this.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        main.render(scale);
     }
-
-    public void setRotationAngle(RendererModel RendererModel, float x, float y, float z) {
-        RendererModel.rotateAngleX = x;
-        RendererModel.rotateAngleY = y;
-        RendererModel.rotateAngleZ = z;
+    @Override
+    public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+        head.rotateAngleY = netHeadYaw * ((float)Math.PI / 180F);
+        head.rotateAngleX = headPitch * ((float)Math.PI / 180F);
+        left_leg.rotateAngleX = -1.5F * this.triangleWave(limbSwing, 13.0F) * limbSwingAmount;
+        right_leg.rotateAngleX = 1.5F * this.triangleWave(limbSwing, 13.0F) * limbSwingAmount;
+        left_leg.rotateAngleY = 0.0F;
+        right_leg.rotateAngleY = 0.0F;
+    }
+    public void setRotationAngle(RendererModel rendererModel, float x, float y, float z) {
+        rendererModel.rotateAngleX = x;
+        rendererModel.rotateAngleY = y;
+        rendererModel.rotateAngleZ = z;
+    }
+    @Override
+    public void setLivingAnimations(T entityIn, float limbSwing, float limbSwingAmount, float partialTick) {
+        int i = entityIn.getAttackTimer();
+        if (i > 0) {
+            left_arm.rotateAngleX = -2.0F + 1.5F * this.triangleWave((float) i - partialTick, 10.0F);
+            right_arm.rotateAngleX = -2.0F + 1.5F * this.triangleWave((float) i - partialTick, 10.0F);
+        } else {
+            left_arm.rotateAngleX = (-0.2F + 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;
+            right_arm.rotateAngleX = (-0.2F - 1.5F * this.triangleWave(limbSwing, 13.0F)) * limbSwingAmount;
+        }
+    }
+    private float triangleWave(float p_78172_1_, float p_78172_2_) {
+        return (Math.abs(p_78172_1_ % p_78172_2_ - p_78172_2_ * 0.5F) - p_78172_2_ * 0.25F) / (p_78172_2_ * 0.25F);
     }
 }
