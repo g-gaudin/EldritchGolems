@@ -13,6 +13,7 @@ import net.minecraft.block.pattern.BlockPattern;
 import net.minecraft.block.pattern.BlockPatternBuilder;
 import net.minecraft.block.pattern.BlockStateMatcher;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.CachedBlockInfo;
@@ -53,7 +54,7 @@ public class GolemHead extends Block {
 
             BlockPos blockpos = blockpattern$patternhelper.translateOffset(1, 2, 0).getPos();
             WoodenGolemEntity woodenGolemEntity = EldritchGolemsItems.WOODENGOLEM.create(world);
-            woodenGolemEntity.setPlayerCreated(true);
+            woodenGolemEntity.setCreatedBy(placer);
             woodenGolemEntity.setLocationAndAngles((double) blockpos.getX() + 0.5D, (double) blockpos.getY() + 0.05D, (double) blockpos.getZ() + 0.5D, 0.0F, 0.0F);
             world.addEntity(woodenGolemEntity);
 
